@@ -24,11 +24,18 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // Cek apakah user ada dan diblokir sebelum autentikasi
+        $user = \App\Models\User::where('email', $request->email)->first();
+
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Redirect sesuai role pengguna
+        return match ($user->role) {
+            'admin'      => redirect()->route('admin.dashboard'),
+            default      => redirect()->route('user.dashboard'),
+        };
     }
 
     /**

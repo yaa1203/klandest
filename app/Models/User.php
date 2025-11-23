@@ -45,4 +45,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function wishlist()
+    {
+        return $this->belongsToMany(Product::class, 'wishlists', 'user_id', 'product_id');
+    }
+
+    public function hasWishlisted($productId)
+    {
+        return $this->wishlist()->where('product_id', $productId)->exists();
+    }
+
+    // app/Models/User.php
+    public function getWishlistCountAttribute()
+    {
+        return $this->wishlist()->count();
+    }
 }

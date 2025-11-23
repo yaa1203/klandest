@@ -41,6 +41,9 @@
                     <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-40">
                         Harga
                     </th>
+                    <th class="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-40">
+                        Kategori
+                    </th>
                     <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider w-32">
                         Gambar
                     </th>
@@ -64,6 +67,14 @@
                             <span>Rp</span>
                             <span>{{ number_format($item->harga, 0, ',', '.') }}</span>
                         </div>
+                    </td>
+
+                    <!-- Kategori -->
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+                            {{ $item->kategori ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600' }}">
+                            {{ $item->kategori?->nama ?? 'Tanpa Kategori' }}
+                        </span>
                     </td>
 
                     <!-- Image -->

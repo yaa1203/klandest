@@ -20,16 +20,19 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('admin.product.create');
+        $kategoris = \App\Models\Kategori::all();
+        return view('admin.product.create', compact('kategoris'));
     }
 
+    // Di method store()
     public function store(Request $request)
     {
         $request->validate([
-            'nama_produk' => 'required',
-            'harga' => 'required|numeric',
-            'deskripsi' => 'nullable',
-            'gambar' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'nama_produk' => 'required|string|max:255',
+            'harga'       => 'required|numeric|min:0',
+            'deskripsi'   => 'nullable|string',
+            'gambar'      => 'image|mimes:jpg,jpeg,png|max:2048',
+            'kategori_id' => 'required|exists:kategoris,id', // wajib pilih kategori
         ]);
 
         $gambar = null;
@@ -39,9 +42,10 @@ class ProductController extends Controller
 
         Product::create([
             'nama_produk' => $request->nama_produk,
-            'harga' => $request->harga,
-            'deskripsi' => $request->deskripsi,
-            'gambar' => $gambar,
+            'harga'       => $request->harga,
+            'deskripsi'   => $request->deskripsi,
+            'gambar'      => $gambar,
+            'kategori_id' => $request->kategori_id,
         ]);
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan');
@@ -52,18 +56,22 @@ class ProductController extends Controller
         return view('admin.product.show', compact('product'));
     }
 
+    // ProductController.php
+
     public function edit(Product $product)
     {
-        return view('admin.product.edit', compact('product'));
+        $kategoris = \App\Models\Kategori::all(); // ambil semua kategori
+        return view('admin.product.edit', compact('product', 'kategoris'));
     }
 
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'nama_produk' => 'required',
-            'harga' => 'required|numeric',
-            'deskripsi' => 'nullable',
-            'gambar' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'nama_produk' => 'required|string|max:255',
+            'harga'       => 'required|numeric|min:0',
+            'deskripsi'   => 'nullable|string',
+            'gambar'      => 'image|mimes:jpg,jpeg,png|max:2048',
+            'kategoris_id' => 'required|exists:kategoris,id',
         ]);
 
         if ($request->hasFile('gambar')) {
@@ -77,12 +85,13 @@ class ProductController extends Controller
 
         $product->update([
             'nama_produk' => $request->nama_produk,
-            'harga' => $request->harga,
-            'deskripsi' => $request->deskripsi,
-            'gambar' => $gambar,
+            'harga'       => $request->harga,
+            'deskripsi'   => $request->deskripsi,
+            'gambar'      => $gambar,
+            'kategoris_id' => $request->kategoris_id,
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil diupdate');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui!');
     }
 
     public function destroy(Product $product)
@@ -98,10 +107,22 @@ class ProductController extends Controller
     // USER SECTION (KATALOG PRODUK)
     // ============================================
     
-    public function catalog()
+    // ProductController.php (bagian user)
+
+    public function catalog(Request $request)
     {
-        $products = Product::latest()->paginate(12);
-        return view('user.produk.index', compact('products'));
+        $kategoris = \App\Models\Kategori::withCount('products')->get(); // ambil semua kategori + jumlah produk
+
+        $query = Product::query();
+
+        // Filter berdasarkan kategori (opsional)
+        if ($request->filled('kategori')) {
+            $query->where('kategori_id', $request->kategori);
+        }
+
+        $products = $query->latest()->paginate(12)->withQueryString();
+
+        return view('user.produk.index', compact('products', 'kategoris'));
     }
 
     public function detail($id)
