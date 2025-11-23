@@ -1,117 +1,139 @@
 @extends('user.layouts.app')
-
 @section('title', 'Keranjang Belanja - Klandest')
 
 @section('content')
-<div class="max-w-6xl mx-auto px-4 py-8">
+<div class="max-w-6xl mx-auto px-4 py-12">
 
     <!-- Header -->
-    <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold text-gray-900">Keranjang Belanja</h1>
-        <p class="text-gray-600 mt-2">Anda memiliki {{ Cart::getTotalQuantity() }} item</p>
+    <div class="text-center mb-10">
+        <h1 class="text-5xl font-bold text-gray-900 mb-3">Keranjang Belanja</h1>
+        <p class="text-xl text-gray-600">Kamu memiliki <strong>{{ Cart::getTotalQuantity() }}</strong> item</p>
     </div>
 
-    @if (session('success'))
-        <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-700">
+    @if(session('success'))
+        <div class="mb-8 p-5 bg-green-50 border border-green-200 rounded-xl text-green-700 text-center font-medium">
             {{ session('success') }}
         </div>
     @endif
 
-    @if (Cart::isEmpty())
-        <!-- Kosong -->
-        <div class="text-center py-16 bg-gray-50 rounded-xl">
-            <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
-            <h3 class="text-2xl font-bold text-gray-600 mb-2">Keranjang Kosong</h3>
-            <p class="text-gray-500 mb-6">Belum ada produk di keranjang.</p>
-            <a href="{{ route('produk.index') }}" class="bg-black text-white px-6 py-3 rounded-lg font-bold">
-                Lanjut Belanja
+    @if(Cart::isEmpty())
+        <div class="text-center py-20 bg-gray-50 rounded-3xl">
+            <i class="fas fa-shopping-cart text-9xl text-gray-200 mb-8"></i>
+            <h3 class="text-3xl font-bold text-gray-700 mb-4">Keranjang Kosong</h3>
+            <p class="text-gray-500 mb-8">Yuk isi keranjangmu dengan koleksi terbaru!</p>
+            <a href="{{ url('produk') }}" class="inline-block bg-black text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-gray-900 transition">
+                Mulai Belanja
             </a>
         </div>
     @else
-        <!-- Isi Keranjang -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
-            @foreach (Cart::getContent() as $item)
-                <div class="p-6 border-b last:border-b-0 flex items-center gap-4">
-                    <!-- Gambar -->
-                    <img src="{{ $item->attributes->gambar ? asset('storage/' . $item->attributes->gambar) : 'https://via.placeholder.com/80' }}" 
-                         alt="{{ $item->name }}" class="w-20 h-20 object-cover rounded-lg">
+        <div class="grid lg:grid-cols-3 gap-10">
+            <!-- Daftar Item -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                    @foreach(Cart::getContent() as $item)
+                        <div class="p-6 border-b last:border-0 flex items-center gap-6 hover:bg-gray-50 transition">
+                            <!-- Gambar -->
+                            <div class="w-28 h-28 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
+                                @if($item->attributes->gambar)
+                                    <img src="{{ asset('storage/' . $item->attributes->gambar) }}" 
+                                         alt="{{ $item->name }}" class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <i class="fas fa-tshirt text-4xl text-gray-300"></i>
+                                    </div>
+                                @endif
+                            </div>
 
-                    <!-- Detail -->
-                    <div class="flex-1">
-                        <h4 class="font-bold text-lg">{{ $item->name }}</h4>
-                        <p class="text-2xl font-bold text-black">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
-                    </div>
+                            <!-- Detail -->
+                            <div class="flex-1">
+                                <h4 class="text-xl font-bold text-gray-900">{{ $item->name }}</h4>
+                                <p class="text-2xl font-bold text-black mt-2">
+                                    Rp {{ number_format($item->price, 0, ',', '.') }}
+                                </p>
+                            </div>
 
-                    <!-- Quantity -->
-                    <div class="flex items-center gap-2">
-                        <form action="{{ route('cart.update') }}" method="POST" class="flex">
-                            @csrf
-                            <input type="hidden" name="id[]" value="{{ $item->id }}">
-                            <input type="hidden" name="quantity[]" value="{{ $item->quantity - 1 }}" 
-                                   id="qty-{{ $item->id }}" onchange="updateQty('{{ $item->id }}')">
-                            <button type="button" onclick="updateQty('{{ $item->id }}', -1)" 
-                                    class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center text-sm">-</button>
-                        </form>
+                            <!-- Quantity -->
+                            <div class="flex items-center gap-3">
+                                <form action="{{ route('cart.update') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id[]" value="{{ $item->id }}">
+                                    <input type="hidden" name="quantity[]" value="{{ max(1, $item->quantity - 1) }}">
+                                    <button type="submit" class="w-10 h-10 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+                                        -
+                                    </button>
+                                </form>
 
-                        <span class="w-8 text-center font-bold">{{ $item->quantity }}</span>
+                                <span class="w-12 text-center font-bold text-lg">{{ $item->quantity }}</span>
 
-                        <form action="{{ route('cart.update') }}" method="POST" class="flex">
-                            @csrf
-                            <input type="hidden" name="id[]" value="{{ $item->id }}">
-                            <input type="hidden" name="quantity[]" value="{{ $item->quantity + 1 }}" 
-                                   id="qty-{{ $item->id }}" onchange="updateQty('{{ $item->id }}')">
-                            <button type="button" onclick="updateQty('{{ $item->id }}', 1)" 
-                                    class="w-8 h-8 bg-gray-200 rounded flex items-center justify-center text-sm">+</button>
-                        </form>
-                    </div>
+                                <form action="{{ route('cart.update') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id[]" value="{{ $item->id }}">
+                                    <input type="hidden" name="quantity[]" value="{{ $item->quantity + 1 }}">
+                                    <button type="submit" class="w-10 h-10 bg-gray-200 rounded-lg hover:bg-gray-300 transition">
+                                        +
+                                    </button>
+                                </form>
+                            </div>
 
-                    <!-- Subtotal -->
-                    <div class="text-right min-w-[120px]">
-                        <p class="text-xl font-bold">Rp {{ number_format($item->getPriceSum(), 0, ',', '.') }}</p>
-                    </div>
-
-                    <!-- Hapus -->
-                    <form action="{{ route('cart.remove', $item->id) }}" method="POST" class="ml-4">
-                        @csrf
-                        <button type="submit" class="text-red-500 hover:text-red-700" onclick="return confirm('Hapus item ini?')">
-                            <i class="fas fa-trash text-xl"></i>
-                        </button>
-                    </form>
+                            <!-- Subtotal & Hapus -->
+                            <div class="text-right">
+                                <p class="text-xl font-bold mb-3">
+                                    Rp {{ number_format($item->getPriceSum(), 0, ',', '.') }}
+                                </p>
+                                <form action="{{ route('cart.remove', $item->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="text-red-500 hover:text-red-700 transition" 
+                                            onclick="return confirm('Hapus item ini dari keranjang?')">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
-        </div>
-
-        <!-- Total & Checkout -->
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold">Total Belanja</h3>
-                <p class="text-3xl font-bold text-black">Rp {{ number_format(Cart::getTotal(), 0, ',', '.') }}</p>
             </div>
 
-            <div class="flex gap-4">
-                <a href="https://wa.me/6281234567890?text={{ urlencode('Halo! Saya mau checkout: ' . Cart::getContent()->map(fn($i) => $i->name . ' x' . $i->quantity . ' = Rp ' . number_format($i->getPriceSum(), 0, ',', '.'))->implode(', ') . '. Total: Rp ' . number_format(Cart::getTotal(), 0, ',', '.')) }}" 
-                   target="_blank" 
-                   class="flex-1 bg-green-600 text-white text-center py-4 rounded-xl font-bold text-lg hover:bg-green-700">
-                    <i class="fab fa-whatsapp mr-2"></i> Checkout WhatsApp
-                </a>
-                <form action="{{ route('cart.clear') }}" method="POST" class="flex-1">
-                    @csrf
-                    <button type="submit" class="w-full bg-gray-300 text-gray-700 py-4 rounded-xl font-bold hover:bg-gray-400">
-                        Kosongkan Keranjang
-                    </button>
-                </form>
+            <!-- Ringkasan & Checkout -->
+            <div class="lg:col-span-1">
+                <div class="bg-gradient-to-br from-black to-gray-900 text-white rounded-2xl shadow-2xl p-8 sticky top-6">
+                    <h3 class="text-2xl font-bold mb-8 text-center">Ringkasan Belanja</h3>
+
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between text-lg">
+                            <span>Subtotal ({{ Cart::getTotalQuantity() }} item)</span>
+                            <span class="font-bold">Rp {{ number_format(Cart::getTotal(), 0, ',', '.') }}</span>
+                        </div>
+                        <div class="flex justify-between text-lg">
+                            <span>Ongkir</span>
+                            <span class="text-green-400">Gratis*</span>
+                        </div>
+                        <hr class="border-white/20">
+                        <div class="flex justify-between text-2xl font-bold">
+                            <span>Total</span>
+                            <span>Rp {{ number_format(Cart::getTotal(), 0, ',', '.') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <a href="{{ route('checkout.index') }}" 
+                           class="block w-full bg-white text-black text-center py-5 rounded-xl font-bold text-xl hover:bg-gray-100 transition shadow-lg transform hover:scale-105">
+                            Lanjut ke Checkout
+                        </a>
+
+                        <form action="{{ route('cart.clear') }}" method="POST" class="text-center">
+                            @csrf
+                            <button type="submit" class="text-gray-400 hover:text-white transition text-sm">
+                                Kosongkan Keranjang
+                            </button>
+                        </form>
+                    </div>
+
+                    <p class="text-center text-xs mt-8 opacity-70">
+                        *Gratis ongkir untuk pembelian di atas Rp 500.000
+                    </p>
+                </div>
             </div>
         </div>
     @endif
 </div>
-
-<script>
-function updateQty(id, change = 0) {
-    const input = document.getElementById('qty-' + id);
-    let newQty = parseInt(input.value) + (change || 0);
-    if (newQty < 1) newQty = 1;
-    input.value = newQty;
-    input.closest('form').submit();
-}
-</script>
 @endsection
