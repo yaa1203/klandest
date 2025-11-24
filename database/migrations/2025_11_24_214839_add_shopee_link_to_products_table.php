@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            //
+        Schema::table('products', function (Blueprint $table) {
+            // Tambahkan kolom shopee_link sebagai TEXT
+            $table->text('shopee_link')->after('harga')->nullable();
         });
     }
 
@@ -21,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
-            //
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropColumn('shopee_link');
         });
     }
 };

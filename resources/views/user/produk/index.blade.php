@@ -15,7 +15,7 @@
                     Lihat Produk
                 </a>
                 <a href="https://wa.me/6281234567890" target="_blank" class="bg-green-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-600 transition shadow-lg flex items-center gap-2">
-                    <span>Chat</span>
+                    <i class="fab fa-whatsapp"></i>
                     <span>Hubungi Kami</span>
                 </a>
             </div>
@@ -111,28 +111,41 @@
 
                     <div class="flex gap-3">
                         <a href="{{ route('produk.show', $product->id) }}"
-                           class="flex-1 text-center bg-black hover:bg-gray-900 text-white py-3 rounded-lg font-bold transition-all duration-200 shadow-md hover:shadow-xl">
+                           class="flex-1 text-center bg-gray-800 hover:bg-gray-900 text-white py-3 rounded-lg font-bold transition-all duration-200 shadow-md hover:shadow-xl">
                             Lihat Detail
                         </a>
+                        <a href="{{ $product->shopee_link }}" 
+                           target="_blank"
+                           class="flex-1 text-center bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-bold transition-all duration-200 shadow-md hover:shadow-xl flex items-center justify-center gap-2">
+                            <i class="fab fa-shopify"></i>
+                            <span>Beli</span>
+                        </a>
+                    </div>
+
+                    <!-- Wishlist Button -->
+                    <div class="mt-3">
                         @auth
                             @if($product->isWishlistedBy(auth()->user()))
-                                <form action="{{ route('wishlist.remove', $product) }}" method="POST" class="inline">
+                                <form action="{{ route('wishlist.remove', $product) }}" method="POST" class="w-full">
                                     @csrf @method('DELETE')
-                                    <button class="px-4 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition shadow">
+                                    <button class="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition shadow flex items-center justify-center gap-2">
                                         <i class="fas fa-heart"></i>
+                                        <span class="text-sm font-medium">Hapus dari Wishlist</span>
                                     </button>
                                 </form>
                             @else
-                                <form action="{{ route('wishlist.add', $product) }}" method="POST" class="inline">
+                                <form action="{{ route('wishlist.add', $product) }}" method="POST" class="w-full">
                                     @csrf
-                                    <button class="px-4 py-3 border border-gray-300 rounded-lg hover:bg-red-50 transition">
+                                    <button class="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-red-50 transition flex items-center justify-center gap-2">
                                         <i class="far fa-heart text-red-500"></i>
+                                        <span class="text-sm font-medium text-gray-700">Tambah ke Wishlist</span>
                                     </button>
                                 </form>
                             @endif
                         @else
-                            <a href="{{ route('login') }}" class="px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                            <a href="{{ route('login') }}" class="w-full block px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-center">
                                 <i class="far fa-heart text-gray-600"></i>
+                                <span class="text-sm font-medium text-gray-700">Login untuk Wishlist</span>
                             </a>
                         @endauth
                     </div>
@@ -156,18 +169,6 @@
             <a href="{{ route('produk.index') }}" class="text-black font-medium underline">← Kembali ke semua produk</a>
         </div>
         @endif
-    </div>
-
-    <!-- CTA Section -->
-    <div class="bg-gradient-to-r from-black to-gray-900 text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h3 class="text-3xl font-bold mb-4">Ada Pertanyaan? Hubungi Kami!</h3>
-            <p class="text-lg text-gray-300 mb-8">Tim kami siap membantu Anda 24/7</p>
-            <a href="https://wa.me/6281234567890" target="_blank" class="inline-flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-xl font-bold transition shadow-2xl text-lg">
-                <span class="text-2xl">Chat</span>
-                <span>Chat via WhatsApp</span>
-            </a>
-        </div>
     </div>
 
 @endsection

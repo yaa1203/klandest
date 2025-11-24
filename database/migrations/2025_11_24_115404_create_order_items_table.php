@@ -9,19 +9,23 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    // database/migrations/xxxx_xx_xx_create_order_items_table.php
     public function up()
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger('product_id');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            
+            // Snapshot data produk saat order dibuat
+            $table->string('nama_produk');
+            $table->string('foto_produk')->nullable();
+            
+            // Data transaksi
             $table->decimal('harga', 15, 2);
             $table->unsignedInteger('quantity');
             $table->decimal('subtotal', 15, 2);
+            
             $table->timestamps();
-
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

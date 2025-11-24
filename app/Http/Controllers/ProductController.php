@@ -24,15 +24,18 @@ class ProductController extends Controller
         return view('admin.product.create', compact('kategoris'));
     }
 
-    // Di method store()
     public function store(Request $request)
     {
         $request->validate([
             'nama_produk' => 'required|string|max:255',
             'harga'       => 'required|numeric|min:0',
+            'shopee_link' => 'required|url', // Validasi URL
             'deskripsi'   => 'nullable|string',
-            'gambar'      => 'image|mimes:jpg,jpeg,png|max:2048',
-            'kategori_id' => 'required|exists:kategoris,id', // wajib pilih kategori
+            'gambar'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'kategori_id' => 'required|exists:kategoris,id',
+        ], [
+            'shopee_link.required' => 'Link Shopee wajib diisi',
+            'shopee_link.url' => 'Link Shopee harus berupa URL yang valid',
         ]);
 
         $gambar = null;
@@ -43,6 +46,7 @@ class ProductController extends Controller
         Product::create([
             'nama_produk' => $request->nama_produk,
             'harga'       => $request->harga,
+            'shopee_link' => $request->shopee_link,
             'deskripsi'   => $request->deskripsi,
             'gambar'      => $gambar,
             'kategori_id' => $request->kategori_id,
@@ -69,9 +73,10 @@ class ProductController extends Controller
         $request->validate([
             'nama_produk' => 'required|string|max:255',
             'harga'       => 'required|numeric|min:0',
+            'shopee_link' => 'required|url',
             'deskripsi'   => 'nullable|string',
-            'gambar'      => 'image|mimes:jpg,jpeg,png|max:2048',
-            'kategoris_id' => 'required|exists:kategoris,id',
+            'gambar'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'kategori_id' => 'required|exists:kategoris,id',
         ]);
 
         if ($request->hasFile('gambar')) {
@@ -86,9 +91,10 @@ class ProductController extends Controller
         $product->update([
             'nama_produk' => $request->nama_produk,
             'harga'       => $request->harga,
+            'shopee_link' => $request->shopee_link,
             'deskripsi'   => $request->deskripsi,
             'gambar'      => $gambar,
-            'kategoris_id' => $request->kategoris_id,
+            'kategori_id' => $request->kategori_id,
         ]);
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui!');

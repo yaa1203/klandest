@@ -131,38 +131,97 @@
 
                     <!-- Action Buttons -->
                     <div class="space-y-4">
-                        <!-- WhatsApp (Utama) -->
-                        <a href="https://wa.me/?text=Halo%20Klandest!%20Saya%20mau%20pesan:%0A%0A*{{ urlencode($product->nama_produk) }}*%0AHarga:%20Rp%20{{ number_format($product->harga, 0, ',', '.') }}%0A%0ALink:%20{{ route('produk.show', $product->id) }}"
+                        <!-- Beli di Shopee (Tombol Utama) -->
+                        <a href="{{ $product->shopee_link }}" 
+                           target="_blank"
+                           class="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white py-5 rounded-xl font-bold text-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3 transform hover:scale-105">
+                            <i class="fab fa-shopify text-3xl"></i>
+                            <span>Beli Sekarang di Shopee</span>
+                        </a>
+
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/?text=Halo%20Klandest!%20Saya%20tertarik%20dengan:%0A%0A*{{ urlencode($product->nama_produk) }}*%0AHarga:%20Rp%20{{ number_format($product->harga, 0, ',', '.') }}%0A%0ALink%20Detail:%20{{ route('produk.show', $product->id) }}%0ALink%20Shopee:%20{{ urlencode($product->shopee_link) }}"
                            target="_blank"
                            class="block w-full text-center bg-green-500 hover:bg-green-600 text-white py-5 rounded-xl font-bold text-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3 transform hover:scale-105">
                             <i class="fab fa-whatsapp text-3xl"></i>
-                            <span>Pesan Sekarang via WhatsApp</span>
+                            <span>Tanya via WhatsApp</span>
                         </a>
 
-                        <!-- Beli Sekarang (langsung checkout 1 produk) -->
-                        <form action="{{ route('cart.add', $product) }}" method="POST" class="w-full">
-                            @csrf
-                            <input type="hidden" name="buy_now" value="1">
-                            <button type="submit"
-                                    class="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-5 rounded-xl font-bold text-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3 transform hover:scale-105">
-                                <i class="fas fa-bolt"></i>
-                                <span>Beli Sekarang</span>
-                            </button>
-                        </form>
+                        <!-- Share Product -->
+                        <div class="pt-4 border-t border-gray-200">
+                            <p class="text-sm text-gray-600 mb-3 font-medium">Bagikan produk ini:</p>
+                            <div class="flex gap-3">
+                                <!-- Share via WhatsApp -->
+                                <a href="https://wa.me/?text=Cek%20produk%20ini%20di%20Shopee:%0A*{{ urlencode($product->nama_produk) }}*%0AHarga:%20Rp%20{{ number_format($product->harga, 0, ',', '.') }}%0A%0A{{ urlencode($product->shopee_link) }}"
+                                   target="_blank"
+                                   class="flex-1 bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition flex items-center justify-center gap-2">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <span class="text-sm font-medium">WhatsApp</span>
+                                </a>
 
-                        <!-- Tambah ke Keranjang -->
-                        <form action="{{ route('cart.add', $product) }}" method="POST" class="w-full">
-                            @csrf
-                            <button type="submit"
-                                    class="w-full bg-black hover:bg-gray-900 text-white py-5 rounded-xl font-bold text-xl shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3 transform hover:scale-105">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span>Tambah ke Keranjang</span>
-                            </button>
-                        </form>
+                                <!-- Copy Link Shopee -->
+                                <button onclick="copyShopeeLink()"
+                                        class="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg transition flex items-center justify-center gap-2">
+                                    <i class="fas fa-copy"></i>
+                                    <span class="text-sm font-medium">Copy Link Shopee</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+    function copyShopeeLink() {
+        const shopeeLink = "{{ $product->shopee_link }}";
+        navigator.clipboard.writeText(shopeeLink).then(() => {
+            // Tampilkan notifikasi sukses yang lebih cantik
+            showNotification('Link Shopee berhasil disalin!');
+        }).catch(err => {
+            console.error('Gagal menyalin link: ', err);
+            alert('Gagal menyalin link. Silakan coba lagi.');
+        });
+    }
+
+    function showNotification(message) {
+        // Buat elemen notifikasi
+        const notification = document.createElement('div');
+        notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 animate-slide-in';
+        notification.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <span>${message}</span>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Hapus notifikasi setelah 3 detik
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+    </script>
+
+    <style>
+    @keyframes slide-in {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    .animate-slide-in {
+        animation: slide-in 0.3s ease;
+    }
+    </style>
+
 @endsection

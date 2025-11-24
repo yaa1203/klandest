@@ -22,16 +22,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('kategori', KategoriController::class);
 
-    Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
+    Route::get('/orders', [OrderController::class, 'adminindex'])->name('orders.index');
 
-    Route::patch('/orders/{order}/approve',  [OrdersController::class, 'approve'])->name('orders.approve');
-    Route::patch('/orders/{order}/reject',   [OrdersController::class, 'reject'])->name('orders.reject');
+    Route::patch('/orders/{order}/approve',  [OrderController::class, 'approve'])->name('orders.approve');
+    Route::patch('/orders/{order}/reject',   [OrderController::class, 'reject'])->name('orders.reject');
 
-    Route::patch('/orders/{order}/confirm',  [OrdersController::class, 'confirm'])->name('orders.confirm');
-    Route::patch('/orders/{order}/pack',     [OrdersController::class, 'pack'])->name('orders.pack');
-    Route::patch('/orders/{order}/ship',     [OrdersController::class, 'ship'])->name('orders.ship');
-    Route::patch('/orders/{order}/complete', [OrdersController::class, 'complete'])->name('orders.complete');
-    Route::patch('/orders/{order}/cancel',   [OrdersController::class, 'cancel'])->name('orders.cancel');
+    Route::patch('/orders/{order}/confirm',  [OrderController::class, 'confirm'])->name('orders.confirm');
+    Route::patch('/orders/{order}/pack',     [OrderController::class, 'pack'])->name('orders.pack');
+    Route::patch('/orders/{order}/ship',     [OrderController::class, 'ship'])->name('orders.ship');
+    Route::patch('/orders/{order}/complete', [OrderController::class, 'complete'])->name('orders.complete');
+    Route::patch('/orders/{order}/cancel',   [OrderController::class, 'cancel'])->name('orders.cancel');
 
     Route::get('/pesan-masuk', [ContactController::class, 'adminIndex'])->name('contact.index');
     Route::get('/pesan-masuk/{message}', [ContactController::class, 'adminShow'])->name('contact.show');
@@ -61,22 +61,15 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
 
-    // Halaman sukses & pembayaran
-    Route::get('/pesanan/{code}/terima-kasih', [OrderController::class, 'success'])
-        ->name('order.success');
-    Route::get('/pesanan/{code}/pembayaran', [OrderController::class, 'payment'])
-        ->name('order.payment');
-
-    // routes/web.php
-    Route::post('/pesanan/{code}/upload-bukti', [OrderController::class, 'uploadProof'])
-        ->name('order.upload-proof');
-
-    Route::get('/pesanan', [PesananController::class, 'index'])
-        ->name('pesanan.index');
-
-    Route::patch('/pesanan/{code}/terima', [PesananController::class, 'received'])
-        ->name('order.received')
-        ->middleware('auth');
+    // Orders
+    Route::prefix('order')->name('order.')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('index');
+        Route::get('/{code}/terima-kasih', [OrderController::class, 'success'])->name('success');
+        Route::get('/{code}/pembayaran', [OrderController::class, 'payment'])->name('payment');
+        Route::post('/{code}/upload-bukti', [OrderController::class, 'uploadProof'])->name('upload-proof');
+        // Route untuk user konfirmasi penerimaan pesanan
+    Route::patch('/{code}/received', [OrderController::class, 'received'])->name('received');
+    });
 
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/{product}', [WishlistController::class, 'add'])->name('wishlist.add');

@@ -126,7 +126,7 @@
                                         </a>
                                     @endif
                                     <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Profil Saya</a>
-                                    <a href="/pesanan" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pesanan Saya</a>
+                                    <a href="/order" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Pesanan Saya</a>
                                     <a href="/wishlist" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Wishlist</a>
                                     <hr class="my-2">
                                     <form method="POST" action="{{ route('logout') }}" class="block">

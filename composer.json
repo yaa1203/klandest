@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "darryldecode/cart": "*",
+        "doctrine/dbal": "^4.3",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9"
     },
