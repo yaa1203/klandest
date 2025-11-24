@@ -37,9 +37,4 @@ class OrderItem extends Model
     {
         return $this->produk?->nama ?? 'Produk tidak ditemukan';
     }
-
-    public function getHargaAttribute($value)
-    {
-        return $this->harga_satuan ?? $value;
-    }
 }

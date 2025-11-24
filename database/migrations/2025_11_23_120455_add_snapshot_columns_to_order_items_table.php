@@ -17,14 +17,13 @@ return new class extends Migration
             $table->string('nama_produk')->after($hasProductId ? 'product_id' : ($hasProdukId ? 'produk_id' : 'id'));
             $table->string('foto_produk')->nullable()->after('nama_produk');
             $table->string('slug')->nullable()->after('foto_produk');
-            $table->decimal('harga_satuan', 15, 2)->after('slug');
         });
     }
 
     public function down()
     {
         Schema::table('order_items', function (Blueprint $table) {
-            $table->dropColumn(['nama_produk', 'foto_produk', 'slug', 'harga_satuan']);
+            $table->dropColumn(['nama_produk', 'foto_produk', 'slug']);
         });
     }
 };
