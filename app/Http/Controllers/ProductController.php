@@ -20,8 +20,7 @@ class ProductController extends Controller
 
     public function create()
     {
-        $kategoris = \App\Models\Kategori::all();
-        return view('admin.product.create', compact('kategoris'));
+        return view('admin.product.create');
     }
 
     public function store(Request $request)
@@ -32,7 +31,6 @@ class ProductController extends Controller
             'shopee_link' => 'required|url', // Validasi URL
             'deskripsi'   => 'nullable|string',
             'gambar'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'kategori_id' => 'required|exists:kategoris,id',
         ], [
             'shopee_link.required' => 'Link Shopee wajib diisi',
             'shopee_link.url' => 'Link Shopee harus berupa URL yang valid',
@@ -49,7 +47,6 @@ class ProductController extends Controller
             'shopee_link' => $request->shopee_link,
             'deskripsi'   => $request->deskripsi,
             'gambar'      => $gambar,
-            'kategori_id' => $request->kategori_id,
         ]);
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan');
@@ -60,12 +57,9 @@ class ProductController extends Controller
         return view('admin.product.show', compact('product'));
     }
 
-    // ProductController.php
-
     public function edit(Product $product)
     {
-        $kategoris = \App\Models\Kategori::all(); // ambil semua kategori
-        return view('admin.product.edit', compact('product', 'kategoris'));
+        return view('admin.product.edit', compact('product'));
     }
 
     public function update(Request $request, Product $product)
@@ -76,7 +70,6 @@ class ProductController extends Controller
             'shopee_link' => 'required|url',
             'deskripsi'   => 'nullable|string',
             'gambar'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'kategori_id' => 'required|exists:kategoris,id',
         ]);
 
         if ($request->hasFile('gambar')) {
@@ -94,7 +87,6 @@ class ProductController extends Controller
             'shopee_link' => $request->shopee_link,
             'deskripsi'   => $request->deskripsi,
             'gambar'      => $gambar,
-            'kategori_id' => $request->kategori_id,
         ]);
 
         return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui!');
@@ -113,22 +105,11 @@ class ProductController extends Controller
     // USER SECTION (KATALOG PRODUK)
     // ============================================
     
-    // ProductController.php (bagian user)
-
     public function catalog(Request $request)
     {
-        $kategoris = \App\Models\Kategori::withCount('products')->get(); // ambil semua kategori + jumlah produk
-
         $query = Product::query();
-
-        // Filter berdasarkan kategori (opsional)
-        if ($request->filled('kategori')) {
-            $query->where('kategori_id', $request->kategori);
-        }
-
         $products = $query->latest()->paginate(12)->withQueryString();
-
-        return view('user.produk.index', compact('products', 'kategoris'));
+        return view('user.produk.index', compact('products'));
     }
 
     public function detail($id)

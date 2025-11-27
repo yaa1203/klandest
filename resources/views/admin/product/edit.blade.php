@@ -76,6 +76,35 @@
                 @enderror
             </div>
 
+            <!-- Link Shopee -->
+            <div>
+                <label for="shopee_link" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Link Shopee <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-orange-500">
+                        <i class="fab fa-shopify text-lg"></i>
+                    </span>
+                    <input type="url" 
+                           name="shopee_link" 
+                           id="shopee_link"
+                           value="{{ old('shopee_link', $product->shopee_link) }}"
+                           class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 @error('shopee_link') border-red-500 @enderror"
+                           placeholder="https://shopee.co.id/..."
+                           required>
+                </div>
+                <p class="mt-2 text-xs text-gray-500">
+                    <i class="fas fa-info-circle"></i>
+                    Salin link produk dari Shopee. Contoh: https://shopee.co.id/product.12345
+                </p>
+                @error('shopee_link')
+                    <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                        <span>⚠️</span>
+                        <span>{{ $message }}</span>
+                    </p>
+                @enderror
+            </div>
+
             <!-- Deskripsi -->
             <div>
                 <label for="deskripsi" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -90,28 +119,6 @@
                     <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
                         <span>⚠️</span>
                         <span>{{ $message }}</span>
-                    </p>
-                @enderror
-            </div>
-
-            <!-- Kategori Produk -->
-            <div>
-                <label for="kategori_id" class="block text-sm font-semibold text-gray-700 mb-2">
-                    Kategori Produk <span class="text-red-500">*</span>
-                </label>
-                <select name="kategoris_id" id="kategoris_id" required
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all duration-200 @error('kategoris_id') border-red-500 @enderror">
-                    <option value="">-- Pilih Kategori --</option>
-                    @foreach($kategoris as $kategori)
-                        <option value="{{ $kategori->id }}"
-                            {{ old('kategoris_id', $product->kategoris_id) == $kategori->id ? 'selected' : '' }}>
-                            {{ $kategori->nama }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('kategoris_id')
-                    <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                        Warning: {{ $message }}
                     </p>
                 @enderror
             </div>

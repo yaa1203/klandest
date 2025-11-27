@@ -37,15 +37,6 @@
             
             <!-- Product Info -->
             <div>
-                <!-- Category Badge (if exists) -->
-                @if(isset($product->kategori))
-                <div class="mb-4">
-                    <span class="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold uppercase">
-                        🏷️ {{ $product->kategori }}
-                    </span>
-                </div>
-                @endif
-
                 <!-- Product Name -->
                 <h1 class="text-3xl font-bold text-gray-800 mb-4">
                     {{ $product->nama_produk }}
@@ -61,6 +52,29 @@
                     </div>
                 </div>
 
+                <!-- Shopee Link -->
+                @if($product->shopee_link)
+                <div class="mb-6">
+                    <p class="text-sm text-gray-500 mb-2 font-semibold">Link Shopee</p>
+                    <a href="{{ $product->shopee_link }}" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 hover:bg-orange-100 text-orange-700 rounded-lg transition-colors font-medium">
+                        <i class="fab fa-shopify text-lg"></i>
+                        <span>Lihat di Shopee</span>
+                        <i class="fas fa-external-link-alt text-xs"></i>
+                    </a>
+                </div>
+                @else
+                <div class="mb-6">
+                    <p class="text-sm text-gray-500 mb-2 font-semibold">Link Shopee</p>
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg">
+                        <i class="fas fa-unlink"></i>
+                        <span>Belum ada link Shopee</span>
+                    </div>
+                </div>
+                @endif
+
                 <!-- Description -->
                 @if(isset($product->deskripsi))
                 <div class="mb-6 pb-6 border-b border-gray-200">
@@ -71,25 +85,13 @@
                 </div>
                 @endif
 
-                <!-- Additional Info -->
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    
-                    <!-- Stock (if exists) -->
-                    @if(isset($product->stok))
-                    <div class="bg-blue-50 rounded-lg p-4">
-                        <p class="text-xs text-blue-600 font-semibold mb-1">Stok</p>
-                        <p class="text-2xl font-bold text-blue-700">{{ $product->stok }}</p>
-                    </div>
-                    @endif
-
-                    <!-- SKU (if exists) -->
-                    @if(isset($product->sku))
-                    <div class="bg-orange-50 rounded-lg p-4">
-                        <p class="text-xs text-orange-600 font-semibold mb-1">SKU</p>
-                        <p class="text-lg font-bold text-orange-700">{{ $product->sku }}</p>
-                    </div>
-                    @endif
+                <!-- SKU (if exists) -->
+                @if(isset($product->sku))
+                <div class="bg-orange-50 rounded-lg p-4 mb-6">
+                    <p class="text-xs text-orange-600 font-semibold mb-1">SKU</p>
+                    <p class="text-lg font-bold text-orange-700">{{ $product->sku }}</p>
                 </div>
+                @endif
 
                 <!-- Timestamps -->
                 <div class="space-y-2 text-sm text-gray-500">

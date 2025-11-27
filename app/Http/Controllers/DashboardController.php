@@ -14,25 +14,24 @@ class DashboardController extends Controller
     {
         $totalProducts = Product::count();
         $totalUsers = User::where('role', 'user')->count();
-        $totalOrders = Order::count();
-        $totalRevenue = Order::sum('total');
         
-        $recentOrders = Order::with('user')
-            ->latest()
+        $productsWithShopee = Product::whereNotNull('shopee_link')->count();
+        
+        $recentProducts = Product::latest()
             ->take(5)
             ->get();
         
-        $recentProducts = Product::latest()
+        $productsWithoutShopee = Product::whereNull('shopee_link')
+            ->latest()
             ->take(5)
             ->get();
 
         return view('admin.dashboard', [
             'totalProducts' => $totalProducts,
             'totalUsers' => $totalUsers,
-            'totalOrders' => $totalOrders,
-            'totalRevenue' => $totalRevenue,
-            'recentOrders' => $recentOrders,
+            'productsWithShopee' => $productsWithShopee,
             'recentProducts' => $recentProducts,
+            'productsWithoutShopee' => $productsWithoutShopee,
         ]);
     }
 
@@ -60,5 +59,38 @@ class DashboardController extends Controller
             'totalOrders' => $totalOrders,
             'recommendations' => $recommendations,
         ]);
+    }
+
+    public function welcome()
+    {
+        // Cek apakah user sudah login
+        $user = Auth::user();
+        
+        if ($user) {
+            // Jika sudah login, ambil data user
+            $myOrders = Order::where('user_id', $user->id)
+                ->with('items')
+                ->latest()
+                ->get();
+            
+            $totalSpent = Order::where('user_id', $user->id)->sum('total');
+            
+            $totalOrders = Order::where('user_id', $user->id)->count();
+            
+            $recommendations = Product::inRandomOrder()
+                ->take(5)
+                ->get();
+
+            return view('user.dashboard', [
+                'user' => $user,
+                'myOrders' => $myOrders,
+                'totalSpent' => $totalSpent,
+                'totalOrders' => $totalOrders,
+                'recommendations' => $recommendations,
+            ]);
+        }
+        
+        // Jika guest, tampilkan welcome page
+        return view('welcome');
     }
 }

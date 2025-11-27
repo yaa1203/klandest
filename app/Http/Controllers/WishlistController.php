@@ -9,7 +9,7 @@ class WishlistController extends Controller
 {
     public function index()
     {
-        $wishlist = auth()->user()->wishlist()->with('kategori')->latest()->get();
+        $wishlist = auth()->user()->wishlist()->latest()->get();
         return view('user.wishlist.index', compact('wishlist'));
     }
 
@@ -25,5 +25,15 @@ class WishlistController extends Controller
         auth()->user()->wishlist()->detach($product->id);
 
         return back()->with('success', 'Dihapus dari Wishlist');
+    }
+
+    /**
+     * Hapus semua produk dari wishlist user.
+     */
+    public function clear()
+    {
+        auth()->user()->wishlist()->detach();
+
+        return back()->with('success', 'Wishlist telah dikosongkan!');
     }
 }

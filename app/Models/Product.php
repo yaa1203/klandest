@@ -11,30 +11,29 @@ class Product extends Model
         'harga',
         'deskripsi',
         'gambar',
-        'kategori_id',
-        'shopee_link', // Tambahkan ini
+        'shopee_link',
     ];
 
-    // Relasi ke Kategori
-    public function kategori()
+    // Relasi dengan Wishlist
+    public function wishlists()
     {
-        return $this->belongsTo(Kategori::class);
+        return $this->hasMany(Wishlist::class);
     }
 
-    public function wishlist()
+    // Relasi many-to-many dengan User melalui wishlist
+    public function wishlistedByUsers()
     {
-        return $this->belongsToMany(User::class, 'wishlists', 'product_id', 'user_id');
+        return $this->belongsToMany(User::class, 'wishlists');
     }
 
-    public function isWishlistedBy(User $user)
+    // Method untuk cek apakah produk ada di wishlist user tertentu
+    public function isWishlistedBy($user)
     {
-        return $this->wishlist()->where('user_id', $user->id)->exists();
-    }
-
-    // Relasi ke Order Items (opsional, untuk tracking penjualan)
-    public function orderItems()
-    {
-        return $this->hasMany(OrderItem::class);
+        if (!$user) {
+            return false;
+        }
+        
+        return $this->wishlists()->where('user_id', $user->id)->exists();
     }
 
     // Helper untuk format harga (opsional)

@@ -21,7 +21,7 @@
 </div>
 
 <!-- Stats Cards -->
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
@@ -36,24 +36,12 @@
     
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
-                <i class="fas fa-check-circle text-green-600"></i>
+            <div class="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
+                <i class="fab fa-shopify text-orange-600"></i>
             </div>
             <div>
-                <p class="text-sm text-gray-600">Aktif</p>
-                <p class="text-2xl font-bold text-gray-900">{{ $products->where('status', 'active')->count() }}</p>
-            </div>
-        </div>
-    </div>
-    
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                <i class="fas fa-tags text-blue-600"></i>
-            </div>
-            <div>
-                <p class="text-sm text-gray-600">Kategori</p>
-                <p class="text-2xl font-bold text-gray-900">{{ \App\Models\Kategori::count() }}</p>
+                <p class="text-sm text-gray-600">Produk Shopee</p>
+                <p class="text-2xl font-bold text-gray-900">{{ $products->whereNotNull('shopee_link')->count() }}</p>
             </div>
         </div>
     </div>
@@ -97,10 +85,7 @@
                         Harga
                     </th>
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                        Kategori
-                    </th>
-                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                        Stok
+                        Link Shopee
                     </th>
                     <th class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
                         Aksi
@@ -137,41 +122,21 @@
                         <div class="font-semibold text-gray-900">Rp {{ number_format($item->harga, 0, ',', '.') }}</div>
                     </td>
 
-                    <!-- Category -->
+                    <!-- Shopee Link -->
                     <td class="px-6 py-4 whitespace-nowrap">
-                        @if($item->kategori)
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200">
-                                <i class="fas fa-tag text-xs"></i>
-                                {{ $item->kategori->nama }}
-                            </span>
+                        @if($item->shopee_link)
+                            <a href="{{ $item->shopee_link }}" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-orange-50 text-orange-700 border border-orange-200 hover:bg-orange-100 transition-colors">
+                                <i class="fab fa-shopify text-xs"></i>
+                                <span class="truncate max-w-[150px]">Lihat di Shopee</span>
+                            </a>
                         @else
                             <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600">
-                                Tanpa Kategori
+                                <i class="fas fa-unlink text-xs mr-1"></i>
+                                Tidak Ada Link
                             </span>
-                        @endif
-                    </td>
-
-                    <!-- Stock -->
-                    <td class="px-6 py-4 text-center whitespace-nowrap">
-                        @if(isset($item->stok))
-                            @if($item->stok > 10)
-                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                                    <div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
-                                    {{ $item->stok }}
-                                </span>
-                            @elseif($item->stok > 0)
-                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-700">
-                                    <div class="w-1.5 h-1.5 bg-orange-500 rounded-full"></div>
-                                    {{ $item->stok }}
-                                </span>
-                            @else
-                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700">
-                                    <div class="w-1.5 h-1.5 bg-red-500 rounded-full"></div>
-                                    Habis
-                                </span>
-                            @endif
-                        @else
-                            <span class="text-gray-400 text-xs">-</span>
                         @endif
                     </td>
 
@@ -211,7 +176,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="px-6 py-16 text-center">
+                    <td colspan="4" class="px-6 py-16 text-center">
                         <div class="flex flex-col items-center gap-4">
                             <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center">
                                 <i class="fas fa-box-open text-4xl text-gray-400"></i>

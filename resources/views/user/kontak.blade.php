@@ -28,8 +28,8 @@
                         <p class="opacity-90">Fast response • 24 Jam</p>
                     </div>
                 </div>
-                <p class="text-lg mb-6">+62 812-3456-7890</p>
-                <a href="https://wa.me/6281234567890?text=Halo%20Klandest%20%F0%9F%91%8B%20Saya%20mau%20tanya%20tentang..." 
+                <p class="text-lg mb-6">{{ setting('phone', '+62 812-3456-7890') }}</p>
+                <a href="https://wa.me/{{ setting('whatsapp_number', '6281234567890') }}?text={{ urlencode(setting('whatsapp_text', 'Halo Klandest 👋 Saya mau tanya tentang...')) }}" 
                    target="_blank"
                    class="inline-flex items-center gap-3 bg-white text-green-600 px-8 py-4 rounded-xl font-bold hover:bg-gray-100 transition shadow-lg">
                     <i class="fab fa-whatsapp text-2xl"></i>
@@ -42,15 +42,15 @@
                 <div class="bg-gray-50 rounded-xl p-6 text-center hover:bg-gray-100 transition">
                     <i class="fas fa-envelope text-4xl text-black mb-4"></i>
                     <h4 class="font-bold text-lg mb-2">Email</h4>
-                    <p class="text-gray-600">info@klandest.com</p>
-                    <a href="mailto:info@klandest.com" class="text-sm text-black underline hover:no-underline">Kirim Email</a>
+                    <p class="text-gray-600">{{ setting('email', 'info@klandest.com') }}</p>
+                    <a href="mailto:{{ setting('email', 'info@klandest.com') }}" class="text-sm text-black underline hover:no-underline">Kirim Email</a>
                 </div>
 
                 <div class="bg-gray-50 rounded-xl p-6 text-center hover:bg-gray-100 transition">
                     <i class="fas fa-clock text-4xl text-black mb-4"></i>
                     <h4 class="font-bold text-lg mb-2">Jam Operasional</h4>
-                    <p class="text-gray-600">Senin - Minggu</p>
-                    <p class="font-semibold">08:00 - 22:00 WIB</p>
+                    <p class="text-gray-600">{{ setting('operating_days', 'Senin - Minggu') }}</p>
+                    <p class="font-semibold">{{ setting('operating_hours', '08:00 - 22:00 WIB') }}</p>
                 </div>
             </div>
 
@@ -64,13 +64,13 @@
                 </div>
                 <div class="p-6">
                     <p class="text-gray-700 mb-4 leading-relaxed">
-                        Jl. Raya Klandest No. 99<br>
-                        Jakarta Selatan, DKI Jakarta 12790<br>
-                        Indonesia
+                        {{ setting('address_line1', 'Jl. Raya Klandest No. 99') }}<br>
+                        {{ setting('address_line2', 'Jakarta Selatan, DKI Jakarta 12790') }}<br>
+                        {{ setting('address_country', 'Indonesia') }}
                     </p>
                     <div class="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-md">
                         <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.074!2d106.791!3d-6.259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTUnMzIuNCI!5e0!3m2!1sid!2sid!4v1234567890" 
+                            src="{{ setting('maps_embed_url', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.074!2d106.791!3d-6.259!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTUnMzIuNCI!5e0!3m2!1sid!2sid!4v1234567890') }}" 
                             width="100%" 
                             height="300" 
                             style="border:0;" 
@@ -85,15 +85,23 @@
             <div class="bg-gradient-to-r from-black to-gray-900 text-white rounded-2xl p-8">
                 <h3 class="text-2xl font-bold mb-6 text-center">Follow Kami</h3>
                 <div class="flex justify-center gap-6">
-                    <a href="https://instagram.com/klandest" target="_blank" class="w-14 h-14 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition">
+                    @if(setting('instagram_url'))
+                    <a href="{{ setting('instagram_url') }}" target="_blank" class="w-14 h-14 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition">
                         <i class="fab fa-instagram text-2xl"></i>
                     </a>
-                    <a href="https://tiktok.com/@klandest" target="_blank" class="w-14 h-14 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition">
+                    @endif
+                    
+                    @if(setting('tiktok_url'))
+                    <a href="{{ setting('tiktok_url') }}" target="_blank" class="w-14 h-14 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition">
                         <i class="fab fa-tiktok text-2xl"></i>
                     </a>
-                    <a href="https://facebook.com/klandest" target="_blank" class="w-14 h-14 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition">
+                    @endif
+                    
+                    @if(setting('facebook_url'))
+                    <a href="{{ setting('facebook_url') }}" target="_blank" class="w-14 h-14 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition">
                         <i class="fab fa-facebook-f text-2xl"></i>
                     </a>
+                    @endif
                 </div>
             </div>
         </div>

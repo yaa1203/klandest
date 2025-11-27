@@ -90,32 +90,6 @@
                 @endif
             </a>
 
-            <!-- Kategori -->
-            <a href="{{ route('kategori.index') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium group
-               {{ request()->routeIs('kategori.*') ? 'bg-gray-900 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('kategori.*') ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-gray-200' }}">
-                    <i class="fas fa-tags text-sm {{ request()->routeIs('kategori.*') ? 'text-white' : 'text-gray-700' }}"></i>
-                </div>
-                <span class="flex-1">Kategori</span>
-                @if(request()->routeIs('kategori.*'))
-                <div class="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
-                @endif
-            </a>
-
-            <!-- Orders -->
-            <a href="{{ route('orders.index') }}"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium group
-            {{ request()->routeIs('orders.*') ? 'bg-gray-900 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('orders.*') ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-gray-200' }}">
-                    <i class="fas fa-shopping-cart text-sm {{ request()->routeIs('orders.*') ? 'text-white' : 'text-gray-700' }}"></i>
-                </div>
-                <span class="flex-1">Pesanan</span>
-                @if(request()->routeIs('orders.*'))
-                <div class="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
-                @endif
-            </a>
-
             <!-- Contact -->
             <a href="{{ route('contact.index') }}"
             class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium group
@@ -133,6 +107,19 @@
             <div class="my-4 border-t border-gray-200"></div>
 
             <!-- Settings -->
+            <a href="{{ route('settings.index') }}"
+               class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium group
+               {{ request()->routeIs('settings.*') ? 'bg-gray-900 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('settings.*') ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-gray-200' }}">
+                    <i class="fas fa-cog text-sm {{ request()->routeIs('settings.*') ? 'text-white' : 'text-gray-700' }}"></i>
+                </div>
+                <span class="flex-1">Pengaturan</span>
+                @if(request()->routeIs('settings.*'))
+                <div class="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
+                @endif
+            </a>
+
+            <!-- profile -->
             <a href="{{ route('profile.edit') }}"
                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium group
                {{ request()->routeIs('profile.*') ? 'bg-gray-900 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
