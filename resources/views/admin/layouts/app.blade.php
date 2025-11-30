@@ -120,14 +120,14 @@
             </a>
 
             <!-- profile -->
-            <a href="{{ route('profile.edit') }}"
-               class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium group
-               {{ request()->routeIs('profile.*') ? 'bg-gray-900 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
-                <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('profile.*') ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-gray-200' }}">
-                    <i class="fas fa-cog text-sm {{ request()->routeIs('profile.*') ? 'text-white' : 'text-gray-700' }}"></i>
+            <a href="{{ route('profil.edit') }}"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium group
+            {{ request()->routeIs('profil.*') ? 'bg-gray-900 text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ request()->routeIs('profil.*') ? 'bg-white/20' : 'bg-gray-100 group-hover:bg-gray-200' }}">
+                    <i class="fas fa-user-circle text-sm {{ request()->routeIs('profil.*') ? 'text-white' : 'text-gray-700' }}"></i>
                 </div>
-                <span class="flex-1">Pengaturan</span>
-                @if(request()->routeIs('profile.*'))
+                <span class="flex-1">Profil Saya</span>
+                @if(request()->routeIs('profil.*'))
                 <div class="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
                 @endif
             </a>

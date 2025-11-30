@@ -33,6 +33,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    // Admin Profile Routes
+    Route::get('/profil', [ProfileController::class, 'adminEdit'])->name('profil.edit');
+    Route::patch('/profil', [ProfileController::class, 'adminUpdate'])->name('profil.update');
+    Route::put('/profil/password', [ProfileController::class, 'adminUpdatePassword'])->name('profil.password.update');
+    Route::delete('/profil', [ProfileController::class, 'adminDestroy'])->name('profil.destroy');
 });
 
 Route::middleware(['auth', 'role:user'])->group(function () {
