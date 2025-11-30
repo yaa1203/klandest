@@ -256,6 +256,12 @@
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const closeSidebarBtn = document.getElementById('close-sidebar');
 
+        // Ensure sidebar is hidden on mobile by default
+        if (window.innerWidth < 1024) {
+            sidebar.classList.add('mobile-hidden');
+            sidebarOverlay.classList.add('hidden');
+        }
+
         function openSidebar() {
             sidebar.classList.remove('mobile-hidden');
             sidebarOverlay.classList.remove('hidden');
@@ -279,16 +285,16 @@
             }
         });
 
-        // Auto-hide alerts after 5 seconds
-        setTimeout(() => {
-            const alerts = document.querySelectorAll('[class*="bg-green-50"], [class*="bg-red-50"]');
-            alerts.forEach(alert => {
-                alert.style.transition = 'opacity 0.3s ease-out';
-                alert.style.opacity = '0';
-                setTimeout(() => alert.remove(), 300);
+        // Close sidebar when clicking any navigation link on mobile
+        const navLinks = sidebar.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth < 1024) {
+                    closeSidebar();
+                }
             });
-        }, 5000);
+        });
     </script>
 
 </body>
-</html> 
+</html>
