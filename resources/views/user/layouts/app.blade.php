@@ -17,59 +17,71 @@
     <!-- NAVBAR -->
     <nav class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex justify-between items-center h-16 md:h-[70px]">
+            <div class="flex justify-between items-center h-20">
 
                 <!-- Logo -->
-                <a href="/" class="flex items-center flex-shrink-0">
+                <a href="{{url('user/dashboard')}}" class="flex items-center flex-shrink-0">
                     <img src="{{ asset('asset/img/IMG-20251123-WA0003-removebg-preview.png') }}" 
                          alt="Klandest Logo" 
-                         class="h-16 md:h-24 w-auto object-contain">
+                         class="h-20 w-auto object-contain">
                 </a>
 
                 @auth
                 <!-- Search Bar - Desktop (Only for logged in users) -->
-                <div class="hidden lg:flex flex-1 max-w-sm mx-8">
+                <div class="hidden lg:flex flex-1 max-w-xl mx-8">
                     <div class="relative w-full">
                         <input 
                             type="text" 
                             placeholder="Cari koleksi terbaru..." 
-                            class="w-full px-4 py-2.5 pl-10 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-black focus:bg-white transition-all"
+                            class="w-full px-4 py-3 pl-11 bg-gray-50 border border-gray-300 rounded-xl text-sm focus:outline-none focus:border-black focus:bg-white transition-all"
                         >
-                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                     </div>
                 </div>
                 @endauth
 
                 <!-- Nav Items -->
-                <div class="flex items-center gap-3 md:gap-6">
+                <div class="flex items-center gap-6">
                     
                     @auth
                     <!-- Links - Desktop (Only for logged in users) -->
-                    <div class="hidden lg:flex gap-6">
-                        <a href="{{ route('user.dashboard') }}" class="text-sm font-medium text-gray-700 hover:text-black transition-colors">Home</a>
-                        <a href="{{url('produk')}}" class="text-sm font-medium text-gray-700 hover:text-black transition-colors">Produk</a>
-                        <a href="{{ url('kontak') }}" class="text-sm font-medium text-gray-700 hover:text-black transition-colors">Kontak</a>
+                    <div class="hidden lg:flex items-center gap-8">
+                        <a href="{{ route('user.dashboard') }}" 
+                           class="text-sm font-semibold text-gray-700 hover:text-black transition-colors relative group">
+                            Home
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                        <a href="{{url('produk')}}" 
+                           class="text-sm font-semibold text-gray-700 hover:text-black transition-colors relative group">
+                            Produk
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                        <a href="{{ url('kontak') }}" 
+                           class="text-sm font-semibold text-gray-700 hover:text-black transition-colors relative group">
+                            Kontak
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
+                        </a>
                     </div>
 
                     <!-- Icons (Only for logged in users) -->
-                    <div class="flex items-center gap-2 md:gap-4">
+                    <div class="flex items-center gap-2">
                         <!-- Search Mobile -->
-                        <button class="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                            <i class="fas fa-search text-base md:text-lg text-black"></i>
+                        <button class="lg:hidden p-2.5 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i class="fas fa-search text-lg text-black"></i>
                         </button>
 
                         <!-- Wishlist Icon -->
                         <a href="{{ route('wishlist.index') }}" 
-                           class="relative p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 group">
-                            <i class="far fa-heart text-base md:text-xl text-black group-hover:text-red-500 transition-colors"></i>
+                           class="relative p-2.5 hover:bg-gray-100 rounded-lg transition-all duration-200 group">
+                            <i class="far fa-heart text-xl text-black group-hover:text-red-500 transition-colors"></i>
                             
                             @if(auth()->user()->wishlist()->count() > 0)
-                                <span class="absolute -top-1 -right-1 min-w-[18px] h-[18px] md:min-w-[20px] md:h-5 px-1 md:px-1.5 bg-red-600 text-white text-[10px] md:text-xs font-bold rounded-full flex items-center justify-center shadow-md border border-white">
+                                <span class="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 bg-red-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg border-2 border-white">
                                     {{ auth()->user()->wishlist()->count() }}
                                 </span>
                             @endif
 
-                            <span class="hidden md:block absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-3 py-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                            <span class="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg">
                                 Wishlist 
                                 @if(auth()->user()->wishlist()->count() > 0)
                                     ({{ auth()->user()->wishlist()->count() }})
@@ -79,75 +91,135 @@
 
                         <!-- Cart Icon -->
                         <a href="{{ route('cart.index') }}" 
-                           class="relative p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 group">
-                            <i class="fas fa-shopping-bag text-base md:text-xl text-black group-hover:scale-110 transition-transform"></i>
+                           class="relative p-2.5 hover:bg-gray-100 rounded-lg transition-all duration-200 group">
+                            <i class="fas fa-shopping-bag text-xl text-black group-hover:scale-110 transition-transform"></i>
                             
                             @if(Cart::getTotalQuantity() > 0)
-                                <span class="absolute -top-1 -right-1 min-w-[18px] h-[18px] md:min-w-[20px] md:h-5 px-1 md:px-1.5 bg-black text-white text-[10px] md:text-xs font-bold rounded-full flex items-center justify-center shadow-md">
+                                <span class="absolute -top-1 -right-1 min-w-[20px] h-5 px-1.5 bg-black text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg border-2 border-white">
                                     {{ Cart::getTotalQuantity() }}
                                 </span>
                             @endif
 
-                            <span class="hidden md:block absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-3 py-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                            <span class="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none shadow-lg">
                                 Keranjang ({{ Cart::getTotalQuantity() }})
                             </span>
                         </a>
-                    </div>
-                    @endauth
 
-                    @guest
-                        <!-- Auth Buttons (Not Logged In) - Desktop -->
-                        <div class="hidden sm:flex items-center gap-2 ml-2">
-                            <a href="{{ route('login') }}" class="px-4 md:px-6 py-2 md:py-2.5 text-sm md:text-base font-medium text-black border-2 border-black rounded-lg hover:bg-gray-50 transition-colors">
-                                Login
-                            </a>
-                            <a href="{{ route('register') }}" class="px-4 md:px-6 py-2 md:py-2.5 text-sm md:text-base font-medium text-white bg-black rounded-lg hover:bg-gray-800 transition-colors">
-                                Daftar
-                            </a>
-                        </div>
-                        
-                        <!-- Mobile Menu Button for Guest -->
-                        <button class="sm:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors" onclick="toggleMobileMenu()">
-                            <i class="fas fa-bars text-lg text-black"></i>
-                        </button>
-                    @endguest
-
-                    @auth
-                        <!-- User Profile (Logged In) - Desktop -->
-                        <div class="hidden sm:flex items-center gap-3 ml-2">
+                        <!-- User Profile Dropdown (Logged In) - Desktop -->
+                        <div class="hidden sm:flex items-center gap-3 ml-4 pl-4 border-l border-gray-200">
                             <div class="hidden md:flex flex-col">
-                                <span class="text-sm font-medium text-black">{{ Auth::user()->name }}</span>
+                                <span class="text-sm font-semibold text-black">{{ Auth::user()->name }}</span>
                                 <span class="text-xs text-gray-500">Member</span>
                             </div>
-                            <div class="relative group">
-                                <button class="w-9 h-9 md:w-10 md:h-10 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors flex items-center justify-center">
-                                    <i class="fas fa-chevron-down text-xs text-black"></i>
+                            
+                            <!-- Dropdown Button -->
+                            <div class="relative">
+                                <button onclick="toggleDropdown()" id="dropdownButton"
+                                        class="w-10 h-10 bg-gradient-to-br from-gray-800 to-black rounded-full hover:shadow-lg transition-all flex items-center justify-center text-white font-bold">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                                 </button>
-                                <div class="hidden group-hover:block absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
-                                    @if(Auth::user()->role === 'admin')
-                                        <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 border-b">
-                                            <i class="fas fa-cog mr-2"></i>Admin Dashboard
+                                
+                                <!-- Dropdown Menu -->
+                                <div id="dropdownMenu" 
+                                     class="hidden absolute right-0 mt-3 w-64 bg-white border border-gray-200 rounded-xl shadow-2xl overflow-hidden z-50">
+                                    
+                                    <!-- Header -->
+                                    <div class="bg-gradient-to-r from-black to-gray-900 text-white p-4">
+                                        <p class="font-bold text-sm">{{ Auth::user()->name }}</p>
+                                        <p class="text-xs text-gray-300 truncate">{{ Auth::user()->email }}</p>
+                                    </div>
+                                    
+                                    <!-- Menu Items -->
+                                    <div class="py-2">
+                                        @if(Auth::user()->role === 'admin')
+                                            <a href="{{ route('admin.dashboard') }}" 
+                                               class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                                <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                                                    <i class="fas fa-cog text-purple-600"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="font-semibold text-gray-900">Admin Dashboard</p>
+                                                    <p class="text-xs text-gray-500">Kelola website</p>
+                                                </div>
+                                            </a>
+                                        @endif
+                                        
+                                        <a href="/profile" 
+                                           class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-user text-blue-600"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-gray-900">Profil Saya</p>
+                                                <p class="text-xs text-gray-500">Edit informasi akun</p>
+                                            </div>
                                         </a>
-                                    @endif
-                                    <a href="/profile" class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
-                                        <i class="fas fa-user mr-2"></i>Profil Saya
-                                    </a>
-                                    <hr class="my-1">
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 font-medium">
-                                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
-                                        </button>
-                                    </form>
+                                        
+                                        <a href="{{ route('wishlist.index') }}" 
+                                           class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-heart text-red-600"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-gray-900">Wishlist</p>
+                                                <p class="text-xs text-gray-500">{{ auth()->user()->wishlist()->count() }} produk</p>
+                                            </div>
+                                        </a>
+                                        
+                                        <a href="{{ route('cart.index') }}" 
+                                           class="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                                            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-shopping-cart text-green-600"></i>
+                                            </div>
+                                            <div>
+                                                <p class="font-semibold text-gray-900">Keranjang</p>
+                                                <p class="text-xs text-gray-500">{{ Cart::getTotalQuantity() }} item</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    
+                                    <!-- Logout -->
+                                    <div class="border-t border-gray-200">
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" 
+                                                    class="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors font-semibold">
+                                                <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                                                    <i class="fas fa-sign-out-alt text-red-600"></i>
+                                                </div>
+                                                <span>Logout</span>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Mobile Menu Button for Logged In Users -->
-                        <button class="sm:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors" onclick="toggleMobileMenu()">
+                        <button class="sm:hidden p-2.5 hover:bg-gray-100 rounded-lg transition-colors" onclick="toggleMobileMenu()">
                             <i class="fas fa-bars text-lg text-black"></i>
                         </button>
+                    </div>
                     @endauth
+
+                    @guest
+                        <!-- Auth Buttons (Not Logged In) - Desktop -->
+                        <div class="hidden sm:flex items-center gap-3 ml-2">
+                            <a href="{{ route('login') }}" 
+                               class="px-6 py-2.5 text-sm font-semibold text-black border-2 border-black rounded-lg hover:bg-gray-50 transition-all">
+                                Login
+                            </a>
+                            <a href="{{ route('register') }}" 
+                               class="px-6 py-2.5 text-sm font-semibold text-white bg-black rounded-lg hover:bg-gray-800 transition-all shadow-md hover:shadow-lg">
+                                Daftar
+                            </a>
+                        </div>
+                        
+                        <!-- Mobile Menu Button for Guest -->
+                        <button class="sm:hidden p-2.5 hover:bg-gray-100 rounded-lg transition-colors" onclick="toggleMobileMenu()">
+                            <i class="fas fa-bars text-lg text-black"></i>
+                        </button>
+                    @endguest
 
                 </div>
 
@@ -344,6 +416,31 @@
     </footer>
 
     <script>
+        // Toggle Dropdown - Lebih mudah diklik
+        let dropdownOpen = false;
+        
+        function toggleDropdown() {
+            const menu = document.getElementById('dropdownMenu');
+            dropdownOpen = !dropdownOpen;
+            
+            if (dropdownOpen) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('dropdownMenu');
+            const button = document.getElementById('dropdownButton');
+            
+            if (menu && button && !menu.contains(event.target) && !button.contains(event.target)) {
+                menu.classList.add('hidden');
+                dropdownOpen = false;
+            }
+        });
+
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('hidden');
@@ -362,4 +459,4 @@
 
     @stack('scripts')
 </body>
-</html> 
+</html>

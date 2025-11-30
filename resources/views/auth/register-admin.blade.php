@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Daftar User - Klandest</title>
+    <title>Daftar Admin - Klandest</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50">
+<body class="bg-gradient-to-br from-purple-50 to-gray-50">
 
     <div class="min-h-screen flex items-center justify-center px-4 py-8 md:py-12">
         <div class="w-full max-w-md">
@@ -20,12 +20,16 @@
                          alt="Klandest Logo" 
                          class="h-20 md:h-24 mx-auto object-contain">
                 </a>
-                <h1 class="text-2xl md:text-3xl font-bold text-black mb-2">Bergabung dengan Klandest</h1>
-                <p class="text-sm md:text-base text-gray-600">Buat akun user baru Anda untuk memulai</p>
+                <div class="inline-flex items-center gap-2 bg-purple-100 px-4 py-2 rounded-full mb-3">
+                    <i class="fas fa-user-shield text-purple-600"></i>
+                    <span class="text-sm font-bold text-purple-700">ADMIN REGISTRATION</span>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-bold text-black mb-2">Daftar sebagai Admin</h1>
+                <p class="text-sm md:text-base text-gray-600">Buat akun administrator untuk Klandest</p>
             </div>
 
             <!-- Card -->
-            <div class="bg-white rounded-xl md:rounded-2xl shadow-lg border border-gray-200 p-6 md:p-8">
+            <div class="bg-white rounded-xl md:rounded-2xl shadow-lg border-2 border-purple-200 p-6 md:p-8">
 
                 <!-- Error Messages -->
                 @if ($errors->any())
@@ -52,13 +56,13 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('register') }}" class="space-y-4 md:space-y-5">
+                <form method="POST" action="{{ route('admin.register.store') }}" class="space-y-4 md:space-y-5">
                     @csrf
 
                     <!-- Name -->
                     <div>
                         <label for="name" class="block text-sm md:text-base font-semibold text-gray-900 mb-2">
-                            <i class="fas fa-user text-gray-400 mr-1"></i>
+                            <i class="fas fa-user text-purple-400 mr-1"></i>
                             Nama Lengkap
                         </label>
                         <input 
@@ -69,7 +73,7 @@
                             required 
                             autofocus
                             autocomplete="name"
-                            class="w-full px-4 py-2.5 md:py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition-all text-sm md:text-base"
+                            class="w-full px-4 py-2.5 md:py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/10 transition-all text-sm md:text-base"
                             placeholder="Masukkan nama lengkap"
                         >
                         @error('name')
@@ -83,8 +87,8 @@
                     <!-- Email Address -->
                     <div>
                         <label for="email" class="block text-sm md:text-base font-semibold text-gray-900 mb-2">
-                            <i class="fas fa-envelope text-gray-400 mr-1"></i>
-                            Email
+                            <i class="fas fa-envelope text-purple-400 mr-1"></i>
+                            Email Admin
                         </label>
                         <input 
                             id="email" 
@@ -93,8 +97,8 @@
                             value="{{ old('email') }}" 
                             required
                             autocomplete="username"
-                            class="w-full px-4 py-2.5 md:py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition-all text-sm md:text-base"
-                            placeholder="nama@email.com"
+                            class="w-full px-4 py-2.5 md:py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/10 transition-all text-sm md:text-base"
+                            placeholder="admin@email.com"
                         >
                         @error('email')
                             <p class="mt-1.5 text-xs md:text-sm text-red-600 flex items-center gap-1">
@@ -107,7 +111,7 @@
                     <!-- Password -->
                     <div>
                         <label for="password" class="block text-sm md:text-base font-semibold text-gray-900 mb-2">
-                            <i class="fas fa-lock text-gray-400 mr-1"></i>
+                            <i class="fas fa-lock text-purple-400 mr-1"></i>
                             Password
                         </label>
                         <div class="relative">
@@ -117,13 +121,13 @@
                                 name="password" 
                                 required
                                 autocomplete="new-password"
-                                class="w-full px-4 py-2.5 md:py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition-all text-sm md:text-base pr-12"
+                                class="w-full px-4 py-2.5 md:py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/10 transition-all text-sm md:text-base pr-12"
                                 placeholder="Minimal 8 karakter"
                             >
                             <button 
                                 type="button" 
                                 onclick="togglePassword('password', 'toggleIcon1')"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 transition-colors"
                             >
                                 <i id="toggleIcon1" class="fas fa-eye"></i>
                             </button>
@@ -139,7 +143,7 @@
                     <!-- Confirm Password -->
                     <div>
                         <label for="password_confirmation" class="block text-sm md:text-base font-semibold text-gray-900 mb-2">
-                            <i class="fas fa-lock text-gray-400 mr-1"></i>
+                            <i class="fas fa-lock text-purple-400 mr-1"></i>
                             Konfirmasi Password
                         </label>
                         <div class="relative">
@@ -149,13 +153,13 @@
                                 name="password_confirmation" 
                                 required
                                 autocomplete="new-password"
-                                class="w-full px-4 py-2.5 md:py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition-all text-sm md:text-base pr-12"
+                                class="w-full px-4 py-2.5 md:py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/10 transition-all text-sm md:text-base pr-12"
                                 placeholder="Ketik ulang password"
                             >
                             <button 
                                 type="button" 
                                 onclick="togglePassword('password_confirmation', 'toggleIcon2')"
-                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-600 transition-colors"
                             >
                                 <i id="toggleIcon2" class="fas fa-eye"></i>
                             </button>
@@ -174,23 +178,23 @@
                             id="terms" 
                             type="checkbox" 
                             required
-                            class="w-4 h-4 mt-0.5 border-2 border-gray-300 rounded cursor-pointer text-black focus:ring-black"
+                            class="w-4 h-4 mt-0.5 border-2 border-gray-300 rounded cursor-pointer text-purple-600 focus:ring-purple-500"
                         >
                         <label for="terms" class="text-xs md:text-sm text-gray-700 leading-relaxed">
-                            Dengan mendaftar, saya menyetujui 
-                            <a href="#" class="text-black font-medium hover:underline">Syarat & Ketentuan</a> 
-                            dan 
-                            <a href="#" class="text-black font-medium hover:underline">Kebijakan Privasi</a>
+                            Saya memahami tanggung jawab sebagai Admin dan menyetujui 
+                            <a href="#" class="text-purple-600 font-medium hover:underline">Syarat & Ketentuan</a> 
+                            serta 
+                            <a href="#" class="text-purple-600 font-medium hover:underline">Kebijakan Privasi</a>
                         </label>
                     </div>
 
                     <!-- Submit Button -->
                     <button 
                         type="submit" 
-                        class="w-full bg-black text-white py-3 md:py-3.5 rounded-lg font-bold hover:bg-gray-800 transition-all duration-200 shadow-md hover:shadow-lg text-sm md:text-base flex items-center justify-center gap-2"
+                        class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 md:py-3.5 rounded-lg font-bold hover:from-purple-700 hover:to-purple-800 transition-all duration-200 shadow-md hover:shadow-lg text-sm md:text-base flex items-center justify-center gap-2"
                     >
-                        <span>Daftar Sekarang</span>
-                        <i class="fas fa-arrow-right"></i>
+                        <i class="fas fa-user-shield"></i>
+                        <span>Daftar sebagai Admin</span>
                     </button>
                 </form>
 
@@ -201,24 +205,24 @@
                     <div class="flex-1 border-t border-gray-300"></div>
                 </div>
 
-                <!-- Admin Registration Link -->
+                <!-- User Registration Link -->
                 <div class="text-center mb-3">
                     <p class="text-sm md:text-base text-gray-600 mb-3">
-                        Ingin daftar sebagai admin?
+                        Ingin daftar sebagai user biasa?
                     </p>
                     <a 
-                        href="{{ route('admin.register') }}" 
-                        class="inline-flex items-center justify-center gap-2 w-full border-2 border-purple-600 text-purple-600 px-6 py-2.5 md:py-3 rounded-lg font-bold hover:bg-purple-50 transition-all duration-200 text-sm md:text-base"
+                        href="{{ route('register') }}" 
+                        class="inline-flex items-center justify-center gap-2 w-full border-2 border-gray-400 text-gray-700 px-6 py-2.5 md:py-3 rounded-lg font-bold hover:bg-gray-50 transition-all duration-200 text-sm md:text-base"
                     >
-                        <i class="fas fa-user-shield"></i>
-                        <span>Daftar sebagai Admin</span>
+                        <i class="fas fa-user"></i>
+                        <span>Daftar sebagai User</span>
                     </a>
                 </div>
 
                 <!-- Login Link -->
                 <div class="text-center">
                     <p class="text-sm md:text-base text-gray-600 mb-3">
-                        Sudah punya akun?
+                        Sudah punya akun admin?
                     </p>
                     <a 
                         href="{{ route('login') }}" 

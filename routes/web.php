@@ -8,8 +8,19 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\Auth\AdminRegisterController;
 
 Route::get('/', [DashboardController::class, 'welcome'])->name('welcome');
+
+// Guest routes (not logged in)
+Route::middleware('guest')->group(function () {
+    // Admin registration
+    Route::get('/admin/register', [AdminRegisterController::class, 'create'])
+        ->name('admin.register');
+    
+    Route::post('/admin/register', [AdminRegisterController::class, 'store'])
+        ->name('admin.register.store');
+});
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
