@@ -20,10 +20,10 @@
             <div class="flex justify-between items-center h-20">
 
                 <!-- Logo -->
-                <a href="{{url('user/dashboard')}}" class="flex items-center flex-shrink-0">
+                <a href="{{ Auth::check() ? url('user/dashboard') : url('/') }}" class="flex items-center flex-shrink-0">
                     <img src="{{ asset('asset/img/IMG-20251123-WA0003-removebg-preview.png') }}" 
-                         alt="Klandest Logo" 
-                         class="h-20 w-auto object-contain">
+                        alt="Klandest Logo" 
+                        class="h-20 w-auto object-contain">
                 </a>
 
                 @auth
